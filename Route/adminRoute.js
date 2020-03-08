@@ -5,7 +5,7 @@ const path = require('path');
 
 const product = [];
 route.get('/add-product', (req,res,next) => {
-  res.render('add-product')
+  res.render('add-product', {titlePage: 'Add Product'})
 })
 route.post('/add-product', (req,res,next) => {
   product.push({title: req.body.title});

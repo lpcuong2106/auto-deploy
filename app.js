@@ -15,7 +15,7 @@ const bodyParser = require('body-parser');
 //   res.send('<h1>Hello work</h1>');
 // });
 app.set('views', 'view');
-app.set('view engine', 'pug');
+app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -23,7 +23,7 @@ app.use('/admin',adminRoute.routers);
 app.use(shopRouter);
 
 app.use((req,res,next) => {
-  res.status(404).render('404');
+  res.status(404).render('404', {titlePage: '404 Not Found'});
 })
 
 // const server = http.createServer((req, res) => {

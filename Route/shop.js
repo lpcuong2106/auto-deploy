@@ -7,7 +7,8 @@ route.get('/', (req, res, next) => {
   const products = adminRoute.products;
   res.render('shop', {
     prods: products,
-    title: 'Product Shop'
+    title: 'Product Shop',
+    titlePage: 'Products Shop'
   });
 })
 
