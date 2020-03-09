@@ -17,4 +17,4 @@ app.use(shopRouter);
 
 app.use(errorController.get404page);
 
-server.listen(3000);
+server.listen(process.env.PORT);
