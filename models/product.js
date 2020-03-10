@@ -1,14 +1,14 @@
-const products = [];
+// const products = [];
 const path = require('path');
 const rootPath = require('../util/path');
 const fs = require('fs');
 const getDb = require('../util/database').getDb;
 module.exports = class Product{
   constructor(title,desciption,price,imageUrl){
-      this.title = title;
-      this.desciption = desciption;
-      this.price = price;
-      this.imageUrl = imageUrl;
+    this.title = title;
+    this.desciption = desciption;
+    this.price = price;
+    this.imageUrl = imageUrl;
   }
   save(){
     // const p = path.join(rootPath, 'data', 'product.json');
@@ -40,4 +40,4 @@ module.exports = class Product{
    
   }
 
-}
+};

@@ -1,6 +1,6 @@
 const Product = require('../models/product');
 
-exports.getProducts = (req, res, next) => {
+exports.getProducts = (req, res) => {
   Product.fetchAll(products => {
     res.render('shop', {
       prods: products,
@@ -10,10 +10,10 @@ exports.getProducts = (req, res, next) => {
   });
   
 };
-exports.addProduct = (req,res,next) => {
-  res.render('add-product', {titlePage: 'Add Product'})
+exports.addProduct = (req,res) => {
+  res.render('add-product', {titlePage: 'Add Product'});
 };
-exports.addProductPost = (req,res,next) => {
+exports.addProductPost = (req,res) => {
   const title = req.body.title;
   const desciption = req.body.desciption;
   const price = req.body.price;

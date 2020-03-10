@@ -1,0 +1,25 @@
+{
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "parserOptions": {
+      "ecmaVersion": 6,
+      "sourceType": "module",
+      "ecmaFeatures": {
+          "jsx": true
+      }
+  },
+  "extends": "eslint:recommended",
+  "rules": {
+      "semi": ["error","always"],
+      "indent": ["error", 2],
+      "no-unused-vars": ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
+  },
+  "plugins": [
+    // "ejs"
+  ],
+  "ignorePatterns": [
+    "node_modules/"
+  ]
+}
