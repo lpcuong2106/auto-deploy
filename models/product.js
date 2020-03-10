@@ -24,7 +24,7 @@ module.exports = class Product{
     // })
     const db = getDb();
     return db.collection('products').insertOne(this).then(result => {
-      console.log(result);
+      // console.log(result);
     }).catch(error => console.log(error));
   }
 

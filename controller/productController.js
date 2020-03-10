@@ -6,9 +6,9 @@ exports.getProducts = (req, res) => {
       prods: products,
       title: 'Product Shop',
       titlePage: 'Products Shop'
-    }).catch(error =>{
-      console.log(error);
     });
+  }).catch(error =>{
+    console.log(error);
   });
   
 };
