@@ -4,9 +4,9 @@ const rootPath = require('../util/path');
 const fs = require('fs');
 const getDb = require('../util/database').getDb;
 module.exports = class Product{
-  constructor(title,desciption,price,imageUrl){
+  constructor(title,description,price,imageUrl){
     this.title = title;
-    this.desciption = desciption;
+    this.description = description;
     this.price = price;
     this.imageUrl = imageUrl;
   }
@@ -23,21 +23,25 @@ module.exports = class Product{
     //   });
     // })
     const db = getDb();
-    db.collection('products').insertOne(this).then(result => {
+    return db.collection('products').insertOne(this).then(result => {
       console.log(result);
     }).catch(error => console.log(error));
   }
 
-  static fetchAll(cb){
-    const p = path.join(rootPath, 'data', 'product.json');
-    let products = fs.readFile(p, (err, contentFile) => {
-      let products = [];
-      if(!err){
-        return cb(JSON.parse(contentFile));
-      }
-      return cb(products);
-    });
-   
+  static fetchAll(){
+    // const p = path.join(rootPath, 'data', 'product.json');
+    // let products = fs.readFile(p, (err, contentFile) => {
+    //   let products = [];
+    //   if(!err){
+    //     return cb(JSON.parse(contentFile));
+    //   }
+    //   return cb(products);
+    // });
+    const db = getDb();
+    return db.collection('products')
+      .find().toArray().then(products => {
+        return products;
+      }).catch(error => console.log(error));
   }
 
 };

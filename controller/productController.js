@@ -1,11 +1,13 @@
 const Product = require('../models/product');
 
 exports.getProducts = (req, res) => {
-  Product.fetchAll(products => {
+  Product.fetchAll().then(products => {
     res.render('shop', {
       prods: products,
       title: 'Product Shop',
       titlePage: 'Products Shop'
+    }).catch(error =>{
+      console.log(error);
     });
   });
   
@@ -15,11 +17,11 @@ exports.addProduct = (req,res) => {
 };
 exports.addProductPost = (req,res) => {
   const title = req.body.title;
-  const desciption = req.body.desciption;
+  const description = req.body.description;
   const price = req.body.price;
   const imageUrl = req.body.imageUrl;
   
-  const product = new Product(req.body.title);
+  const product = new Product(title, description, price, imageUrl);
   product.save();
   res.redirect('/');
 };
