@@ -1,14 +1,17 @@
 // const products = [];
-const path = require('path');
-const rootPath = require('../util/path');
-const fs = require('fs');
+// const path = require('path');
+// const rootPath = require('../util/path');
+// const fs = require('fs');
 const getDb = require('../util/database').getDb;
+const mongoDb = require('mongodb');
+const express = require('express');
 module.exports = class Product{
-  constructor(title,description,price,imageUrl){
+  constructor(title,description,price,imageUrl, id){
     this.title = title;
     this.description = description;
     this.price = price;
     this.imageUrl = imageUrl;
+    this._id = id;
   }
   save(){
     // const p = path.join(rootPath, 'data', 'product.json');
@@ -23,9 +26,21 @@ module.exports = class Product{
     //   });
     // })
     const db = getDb();
-    return db.collection('products').insertOne(this).then(result => {
-      // console.log(result);
-    }).catch(error => console.log(error));
+    let dbOp;
+    console.log(dbOp);
+    if(this._id) {
+      dbOp =  db.collection('products').updateOne({_id: new mongoDb.ObjectId(this._id)}, { $set: this });
+    }else{
+      dbOp = db.collection('products').insertOne(this);
+    }
+    return dbOp
+      .then(result => {
+        console.log(result);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    // console.log(result);
   }
 
   static fetchAll(){
@@ -42,6 +57,18 @@ module.exports = class Product{
       .find().toArray().then(products => {
         return products;
       }).catch(error => console.log(error));
+  }
+
+  static findById(prodId){
+    const db = getDb();
+    return db
+      .collection('products')
+      .find({_id: new mongoDb.ObjectId(prodId)})
+      .next()
+      .then(products => {
+        console.log(products);
+        return products;
+      }).catch(err => console.log(err));
   }
 
 };

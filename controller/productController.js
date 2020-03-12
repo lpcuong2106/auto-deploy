@@ -2,26 +2,27 @@ const Product = require('../models/product');
 
 exports.getProducts = (req, res) => {
   Product.fetchAll().then(products => {
-    res.render('shop', {
+    res.render('shop/product-list', {
       prods: products,
       title: 'Product Shop',
-      titlePage: 'Products Shop'
+      titlePage: 'Products Shop',
+      path: '/'
     });
   }).catch(error =>{
     console.log(error);
   });
   
 };
-exports.addProduct = (req,res) => {
-  res.render('add-product', {titlePage: 'Add Product'});
-};
-exports.addProductPost = (req,res) => {
-  const title = req.body.title;
-  const description = req.body.description;
-  const price = req.body.price;
-  const imageUrl = req.body.imageUrl;
-  
-  const product = new Product(title, description, price, imageUrl);
-  product.save();
-  res.redirect('/');
+
+
+exports.getProductByID = (req,res) => {
+  const prodId = req.params.productId;
+  Product.findById(prodId)
+    .then(product => {
+      res.render('shop/product-detail', {
+        product: product,
+        titlePage: product.title,
+        path: '/products'
+      });
+    }).catch(err=>console.log(err));
 };
