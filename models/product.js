@@ -11,7 +11,7 @@ module.exports = class Product{
     this.description = description;
     this.price = price;
     this.imageUrl = imageUrl;
-    this._id = id;
+    this._id = new mongoDb.ObjectId(id);
   }
   save(){
     // const p = path.join(rootPath, 'data', 'product.json');
@@ -29,7 +29,7 @@ module.exports = class Product{
     let dbOp;
     console.log(dbOp);
     if(this._id) {
-      dbOp =  db.collection('products').updateOne({_id: new mongoDb.ObjectId(this._id)}, { $set: this });
+      dbOp =  db.collection('products').updateOne({_id: this._id}, { $set: this });
     }else{
       dbOp = db.collection('products').insertOne(this);
     }
@@ -42,7 +42,14 @@ module.exports = class Product{
       });
     // console.log(result);
   }
-
+  static deleteById(prodId){
+    const db = getDb();
+    return db.collection('products').deleteOne({_id: new mongoDb.ObjectId(prodId)})
+      .then(result => {
+        console.log('Deleted');
+      })
+      .catch(err => console.log(err));
+  }
   static fetchAll(){
     // const p = path.join(rootPath, 'data', 'product.json');
     // let products = fs.readFile(p, (err, contentFile) => {
@@ -54,9 +61,12 @@ module.exports = class Product{
     // });
     const db = getDb();
     return db.collection('products')
-      .find().toArray().then(products => {
+      .find()
+      .toArray()
+      .then(products => {
         return products;
-      }).catch(error => console.log(error));
+      })
+      .catch(error => console.log(error));
   }
 
   static findById(prodId){
@@ -68,7 +78,8 @@ module.exports = class Product{
       .then(products => {
         console.log(products);
         return products;
-      }).catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
   }
 
 };

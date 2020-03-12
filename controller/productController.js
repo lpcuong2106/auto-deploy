@@ -8,9 +8,10 @@ exports.getProducts = (req, res) => {
       titlePage: 'Products Shop',
       path: '/'
     });
-  }).catch(error =>{
-    console.log(error);
-  });
+  })
+    .catch(error =>{
+      console.log(error);
+    });
   
 };
 
@@ -24,5 +25,6 @@ exports.getProductByID = (req,res) => {
         titlePage: product.title,
         path: '/products'
       });
-    }).catch(err=>console.log(err));
+    })
+    .catch(err=>console.log(err));
 };

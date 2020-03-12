@@ -1,5 +1,5 @@
 const Product = require('../models/product');
-const mongodb = require('mongodb');
+
 exports.getEditProducts = (req, res) => {
   const editMode = req.query.edit;
   if(!editMode){
@@ -14,7 +14,8 @@ exports.getEditProducts = (req, res) => {
         editing: editMode,
         path: '/admin/edit-product'
       });
-    }).catch(error =>{
+    })
+    .catch(error =>{
       console.log(error);
     });
 };
@@ -24,12 +25,13 @@ exports.postEditProduct = (req, res) => {
   const updatedPrice = req.body.price;
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
-  const product = new Product(updatedTitle, updatedDesc, updatedPrice, updatedImageUrl, new mongodb.ObjectId(prodId));
+  const product = new Product(updatedTitle, updatedDesc, updatedPrice, updatedImageUrl, prodId);
   product.save()
     .then(result => {
       console.log(result);
       res.redirect('/admin/products');
-    }).catch(err => console.log(err));
+    })
+    .catch(err => console.log(err));
 };
 exports.addProduct = (req,res) => {
   res.render('add-product', {titlePage: 'Add Product', path: '/admin/add-product'});
@@ -51,9 +53,18 @@ exports.getProductsAdmin = (req, res) => {
       titlePage: 'Admin Product',
       path: '/admin/products'
     });
-  }).catch(error =>{
-    console.log(error);
-  });
+  })
+    .catch(error =>{
+      console.log(error);
+    });
   
 };
 
+exports.postDeleteProduct = (req, res) => {
+  const prodId = req.body.productId;
+  Product.deleteById(prodId).then(() => {
+    console.log('DEsctroyed product');
+    res.redirect('/admin/products');
+  })
+    .catch(err => console.log(err));
+};
