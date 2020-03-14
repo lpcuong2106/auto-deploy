@@ -4,15 +4,17 @@ const MongoClient = mongodb.MongoClient;
 let _db;
 
 const monogoConnect = callback => {
-  MongoClient.connect(process.env.MONGO_URI, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  })
+  MongoClient.connect(process.env.MONGO_URI,
+    {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+    })
     .then(client => {
       console.log('Connected');
       _db = client.db();
       callback();
-    }).catch(error => {
+    })
+    .catch(error => {
       console.log(error);
       throw error;
     });

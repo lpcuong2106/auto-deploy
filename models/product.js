@@ -6,12 +6,13 @@ const getDb = require('../util/database').getDb;
 const mongoDb = require('mongodb');
 const express = require('express');
 module.exports = class Product{
-  constructor(title,description,price,imageUrl, id){
+  constructor(title,description,price,imageUrl, id, userId){
     this.title = title;
     this.description = description;
     this.price = price;
     this.imageUrl = imageUrl;
-    this._id = new mongoDb.ObjectId(id);
+    this._id = id ? new mongoDb.ObjectId(id) : null;
+    this.userId = userId;
   }
   save(){
     // const p = path.join(rootPath, 'data', 'product.json');
@@ -27,11 +28,13 @@ module.exports = class Product{
     // })
     const db = getDb();
     let dbOp;
-    console.log(dbOp);
     if(this._id) {
-      dbOp =  db.collection('products').updateOne({_id: this._id}, { $set: this });
+      dbOp =  db.collection('products')
+        .updateOne({_id: this._id},
+          { $set: this });
     }else{
-      dbOp = db.collection('products').insertOne(this);
+      dbOp = db.collection('products')
+        .insertOne(this);
     }
     return dbOp
       .then(result => {
@@ -44,7 +47,8 @@ module.exports = class Product{
   }
   static deleteById(prodId){
     const db = getDb();
-    return db.collection('products').deleteOne({_id: new mongoDb.ObjectId(prodId)})
+    return db.collection('products')
+      .deleteOne({_id: new mongoDb.ObjectId(prodId)})
       .then(result => {
         console.log('Deleted');
       })
