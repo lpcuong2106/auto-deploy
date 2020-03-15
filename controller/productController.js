@@ -3,7 +3,7 @@ const { response } = require('express');
 const { restart } = require('nodemon');
 
 exports.getProducts = (req, res) => {
-  Product.fetchAll()
+  Product.find()
     .then(products => {
       res.render('shop/product-list',
         {
@@ -19,7 +19,7 @@ exports.getProducts = (req, res) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
     .then(products => {
       res.render('shop/index',
         {

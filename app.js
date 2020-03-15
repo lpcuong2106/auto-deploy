@@ -21,17 +21,17 @@ app.set('view engine',
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname,
   'public')));
-app.use((req,res, next) => {
-  User.findById("5e6a68dfe0b68a30401c3184")
-    .then(user => {
-      req.user = new User(user.name,
-        user.email,
-        user.cart,
-        user._id);
-      next();
-    })
-    .catch(err=> console.log(err));
-});
+// app.use((req,res, next) => {
+//   User.findById("5e6a68dfe0b68a30401c3184")
+//     .then(user => {
+//       req.user = new User(user.name,
+//         user.email,
+//         user.cart,
+//         user._id);
+//       next();
+//     })
+//     .catch(err=> console.log(err));
+// });
 app.use('/admin',
   adminRoute);
 app.use(shopRouter);
