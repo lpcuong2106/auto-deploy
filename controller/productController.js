@@ -1,4 +1,6 @@
 const Product = require('../models/product');
+const { response } = require('express');
+const { restart } = require('nodemon');
 
 exports.getProducts = (req, res) => {
   Product.fetchAll()
@@ -86,4 +88,24 @@ exports.postCartDeleteProduct = (req, res) => {
     .catch(err => {
       console.log(err);
     });
+};
+exports.postOrder = (req,res) => {
+  let fetchedCart;
+  req.user.addOrder()
+    .then(result => {
+      res.redirect('/orders');
+    })
+    .catch(err => console.log(err));
+};
+exports.getOrders = (req, res) => {
+  req.user
+    .getOrders()
+    .then(orders => {
+      res.render('shop/orders', {
+        path: '/orthers',
+        titlePage: 'Your Orders',
+        orders: orders
+      });
+    })
+    .catch(err => console.log(err));
 };

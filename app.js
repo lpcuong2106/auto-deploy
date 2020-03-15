@@ -7,10 +7,10 @@ const adminRoute = require('./Route/adminRoute');
 const bodyParser = require('body-parser');
 const errorController = require('./controller/errorController');
 
-const monogoConnect = require('./util/database').monogoConnect;
+// const monogoConnect = require('./util/database').monogoConnect;
 const dotenv = require('dotenv');
 const User = require('./models/user');
-
+const mongoose = require('mongoose');
 dotenv.config();
 
 app.set('views',
@@ -37,7 +37,12 @@ app.use('/admin',
 app.use(shopRouter);
 app.use(errorController.get404page);
 
-monogoConnect(() => {
-  app.listen(process.env.PORT);
-});
+// monogoConnect(() => {
+//   app.listen(process.env.PORT);
+// });
 
+mongoose.connect(process.env.MONGO_URI)
+  .then(result => {
+    app.listen(process.env.PORT || 3000);
+  })
+  .catch(err=>console.log(err));
