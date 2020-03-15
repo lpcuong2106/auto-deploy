@@ -21,17 +21,15 @@ app.set('view engine',
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname,
   'public')));
-// app.use((req,res, next) => {
-//   User.findById("5e6a68dfe0b68a30401c3184")
-//     .then(user => {
-//       req.user = new User(user.name,
-//         user.email,
-//         user.cart,
-//         user._id);
-//       next();
-//     })
-//     .catch(err=> console.log(err));
-// });
+app.use((req,res, next) => {
+
+  User.findById('5e6e2cf86f8df33980d70769')
+    .then(user => {
+      req.user = user; 
+      next();
+    })
+    .catch(err=> console.log(err));
+});
 app.use('/admin',
   adminRoute);
 app.use(shopRouter);
@@ -41,8 +39,22 @@ app.use(errorController.get404page);
 //   app.listen(process.env.PORT);
 // });
 
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true})
   .then(result => {
+    User.findOne()
+      .then(user => {
+        if(!user){
+          const user = new User({
+            name: 'Cuong',
+            email: 'noname21062000@gmail.com',
+            cart: {
+              items: []
+            }
+          });
+          user.save();
+        }
+      });
+   
     app.listen(process.env.PORT || 3000);
   })
   .catch(err=>console.log(err));
