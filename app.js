@@ -7,13 +7,19 @@ const adminRoute = require('./Route/adminRoute');
 const authRoute = require('./Route/auth');
 const bodyParser = require('body-parser');
 const errorController = require('./controller/errorController');
+const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 
 // const monogoConnect = require('./util/database').monogoConnect;
 const dotenv = require('dotenv');
 const User = require('./models/user');
 const mongoose = require('mongoose');
-dotenv.config();
 
+dotenv.config();
+const store = new MongoDBStore({
+  uri: process.env.MONGO_URI,
+  collection: 'sessions'
+});
 app.set('views',
   'view');
 app.set('view engine',
@@ -22,9 +28,12 @@ app.set('view engine',
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname,
   'public')));
+app.use(session({ secret: 'my secret', resave: false, saveUninitialized: false, store: store}));
 app.use((req,res, next) => {
-
-  User.findById('5e6e2cf86f8df33980d70769')
+  if(!req.session.user){
+    return next();
+  }
+  User.findById(req.session.user._id)
     .then(user => {
       req.user = user; 
       next();
