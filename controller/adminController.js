@@ -11,7 +11,7 @@ exports.getEditProducts = (req, res) => {
       res.render('admin/edit-product',
         {
           product: products,
-          titlePage: 'Edit product',
+          pageTitle: 'Edit product',
           editing: editMode,
           path: '/admin/edit-product'
         });
@@ -44,7 +44,7 @@ exports.postEditProduct = (req, res) => {
 exports.getAddProduct = (req, res, next) => {
   res.render('admin/edit-product',
     {
-      titlePage: 'Add Product',
+      pageTitle: 'Add Product',
       path: '/admin/add-product',
       editing: false
     });
@@ -73,7 +73,7 @@ exports.getProductsAdmin = (req, res) => {
         {
           prods: products,
           title: 'Product Shop',
-          titlePage: 'Admin Product',
+          pageTitle: 'Admin Product',
           path: '/admin/products'
         });
     })

@@ -4,6 +4,7 @@ const shopRouter = require('./Route/shop');
 const path = require('path');
 const app = express();
 const adminRoute = require('./Route/adminRoute');
+const authRoute = require('./Route/auth');
 const bodyParser = require('body-parser');
 const errorController = require('./controller/errorController');
 
@@ -33,6 +34,7 @@ app.use((req,res, next) => {
 app.use('/admin',
   adminRoute);
 app.use(shopRouter);
+app.use(authRoute);
 app.use(errorController.get404page);
 
 // monogoConnect(() => {
