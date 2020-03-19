@@ -52,20 +52,6 @@ app.use(errorController.get404page);
 
 mongoose.connect(process.env.MONGO_URI, {useNewUrlParser: true})
   .then(result => {
-    User.findOne()
-      .then(user => {
-        if(!user){
-          const user = new User({
-            name: 'Cuong',
-            email: 'noname21062000@gmail.com',
-            cart: {
-              items: []
-            }
-          });
-          user.save();
-        }
-      });
-   
     app.listen(process.env.PORT || 3000);
   })
   .catch(err=>console.log(err));

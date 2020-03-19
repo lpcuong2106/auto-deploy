@@ -1,6 +1,7 @@
 const Product = require('../models/product');
 
 exports.getEditProducts = (req, res) => {
+ 
   const editMode = req.query.edit;
   if(!editMode){
     return res.redirect('/');
@@ -43,6 +44,9 @@ exports.postEditProduct = (req, res) => {
 };
 
 exports.getAddProduct = (req, res, next) => {
+  if(!req.session.isLoggedIn){
+    return res.redirect('/login');
+  }
   res.render('admin/edit-product',
     {
       pageTitle: 'Add Product',
